@@ -103,7 +103,6 @@ public class Line extends SimpleFuncPlot {
     // ... built-in line-drawing functionality
     public void draw() {
 
-        System.out.println("drawing a line 1!");
         if (constituents.get(0) == null || constituents.get(1) == null) {
             findOuterCullPoints();
         }
@@ -118,7 +117,6 @@ public class Line extends SimpleFuncPlot {
 
     public void draw(double x, double y) {
 
-        //System.out.println("drawing a line 2!");
         if (constituents.get(0) == null || constituents.get(1) == null) {
             findOuterCullPoints();
         }

@@ -27,8 +27,8 @@ public class MindEye extends PApplet {
 
         l = new Line(new Point(0, 90), new Point(50, 90));
         l.setStill();
-        //l.rotate(0, 0, Math.toRadians(90), AnimationInterpolation.LINEAR, AnimationInterpolationDirection.IN, 1000, false);
-        l.translate(0, -100, AnimationInterpolation.LINEAR, AnimationInterpolationDirection.IN, 10000, false);
+        //l.rotate(0, 0, Math.toRadians(90), AnimationInterpolation.LINEAR, AnimationInterpolationDirection.IN, 300, false);
+        l.translate(30, -100, AnimationInterpolation.LINEAR, AnimationInterpolationDirection.IN, 300, false);
         //l.translate(100, 0, AnimationInterpolation.LINEAR, AnimationInterpolationDirection.IN, 94, false);
         //l.translate(-15, -15, AnimationInterpolation.LINEAR, AnimationInterpolationDirection.IN, 84, false);
         //l.translate(0, 2, AnimationInterpolation.LINEAR, AnimationInterpolationDirection.IN, 54, false);
@@ -43,8 +43,9 @@ public class MindEye extends PApplet {
             stroke(color(frameCount%360, 360, 360));
 
             l.animate();
+            l.draw(l.x, l.y);
 
-            done = true;
+            //done = true;
         }
     }
 }

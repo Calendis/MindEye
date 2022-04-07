@@ -4,9 +4,13 @@ public abstract class Transformation {
     double y;
     double theta;
 
+    double startX = Double.NaN;
+    double startY = Double.NaN;
+
     AnimationInterpolation interpolKind;
     AnimationInterpolationDirection direction;
     int frames;
+    int currentFrame = 0;
 
     // Consecutive groups of transformations will be done simultaneously if concurrent is true
     boolean concurrent;
@@ -20,6 +24,64 @@ public abstract class Transformation {
         frames = f;
         concurrent = c;
     }
+
+    public double[] apply(MathObject sfp) {
+
+        double newX = startX;
+        double newY = startY;
+        if (Double.isNaN(startX)) {
+            newX = sfp.x;
+            startX = sfp.x;
+        }
+
+        if (Double.isNaN(startY)) {
+            newY = sfp.y;
+            startY = sfp.y;
+        }
+
+        // Interpolate arguments
+        double progress = (double)currentFrame / frames;
+        System.out.println("progress: " + progress);
+        if (progress >= 1) {
+            done = true;
+            return new double[] {newX, newY};
+        }
+
+        double interpX = x * progress;
+        double interpY = y * progress;
+        double interpTheta = theta;// * progress;
+
+        switch (transformationKind) {
+            case SCALE -> {
+
+                newX *= interpX;
+                newY *= interpY;
+            }
+
+            case ROTATE -> {
+                // Translate coords to pivot point
+                newX -= interpX;
+                newY -= interpY;
+
+                // Rotate
+                double tempX = newX * Math.cos(interpTheta) + newY * Math.sin(interpTheta);
+                double tempY = newX * Math.sin(interpTheta) - newY * Math.cos(interpTheta);
+
+                // Translate back
+                newX = tempX + interpX;
+                newY = tempY + interpY;
+            }
+
+            case TRANSLATE -> {
+                newX += interpX;
+                newY += interpY;
+            }
+        }
+
+        currentFrame ++;
+        return new double[] {newX, newY};
+    }
+
 
 }
 

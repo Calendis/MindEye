@@ -14,6 +14,9 @@ public abstract class MathObject {
     double targX = x;
     double targY = y;
 
+    int currentFrame = 0;
+    int grain = 1000;
+
     // List of transformations to be animated when animate() is called
     public ArrayList<Transformation> transformations = new ArrayList();
 
@@ -205,6 +208,12 @@ public abstract class MathObject {
     public double windowY(double y) {
         return -y + GlobalContainer.dims[1] / 2d;
     }
+
+    public void setTargPos(double x, double y) {
+        targX = x;
+        targY = y;
+    }
+
 
 }
 
