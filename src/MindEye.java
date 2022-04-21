@@ -27,20 +27,24 @@ public class MindEye extends PApplet {
         colorMode(HSB, 360);
         clear();
 
-
         l = new Line(new Point(0, -100), new Point(-0, 100));
         l.setStill();
 
-
-        s = new Sinusoid(0, 0, 100, 0.1, 0);
+        s = new Sinusoid(0, 0, 50, 0.08, 0);
         s.setStill();
 
-        si = s.interpolation(-100, 100, 0.1);
+        si = s.interpolation(-50, 50, 0.05);
+        si.setStill();
 
-        si.translate(100, 100, AnimationInterpolation.LINEAR, AnimationInterpolationDirection.IN, AnimationDepth.NESTED, 200, true);
-        //si.rotate(0, -50, Math.toRadians(360), AnimationInterpolation.LINEAR, AnimationInterpolationDirection.IN, AnimationDepth.OUTER, 500, true);
+        //si.translate(100, 100, AnimationInterpolation.LINEAR, AnimationInterpolationDirection.IN, AnimationDepth.NESTED, 1200, true);
+        //si.rotate(0, 0, Math.toRadians(360), AnimationInterpolation.LINEAR, AnimationInterpolationDirection.IN, AnimationDepth.OUTER, 1200, true);
+        //si.translate(9999, 9999, AnimationInterpolation.LINEAR, AnimationInterpolationDirection.IN, AnimationDepth.OUTER, 0, false);
 
-        //l.rotate(0, -50, Math.toRadians(360), AnimationInterpolation.LINEAR, AnimationInterpolationDirection.IN, AnimationDepth.NESTED, 500, true);
+        //l.translate(100, 100, AnimationInterpolation.LINEAR, AnimationInterpolationDirection.IN, 0, 1200, true);
+        si.translate(50, 400, AnimationInterpolation.LINEAR, AnimationInterpolationDirection.IN, 0, 2400, false);
+        si.rotate(100, 0, Math.toRadians(360), AnimationInterpolation.LINEAR, AnimationInterpolationDirection.IN, 0, 2400, true);
+        si.rotate(0, 100, Math.toRadians(360*3), AnimationInterpolation.LINEAR, AnimationInterpolationDirection.IN, 2, 2400, true);
+        si.translate(9999, 9999, AnimationInterpolation.LINEAR, AnimationInterpolationDirection.IN, 0, 0, false);
     }
 
     @Override
@@ -52,7 +56,7 @@ public class MindEye extends PApplet {
         stroke(color((int)((double)frameCount/2400 * 360) , 360, 360));
 
         si.animate();
-        si.draw(si.x, si.y);
+        si.draw(si.x, si.y-200);
 
         //l.animate();
         //l.draw(l.x, l.y);

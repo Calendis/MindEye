@@ -36,24 +36,6 @@ public abstract class MathObject {
     }
 
 
-    /*
-        Transformations
-     */
-    public void scale(double x, double y, AnimationInterpolation interpolationKind, AnimationInterpolationDirection direction, AnimationDepth depth,
-                      int frames, boolean concurrent) {
-        transformations.add(new Scale(x, y, interpolationKind, direction, depth, frames, concurrent));
-    }
-
-    public void translate(double x, double y, AnimationInterpolation interpolationKind, AnimationInterpolationDirection direction, AnimationDepth depth,
-                          int frames, boolean concurrent) {
-        transformations.add(new Translate(x, y, interpolationKind, direction, depth, frames, concurrent));
-    }
-
-    public void rotate(double x, double y, double theta, AnimationInterpolation interpolationKind, AnimationInterpolationDirection direction, AnimationDepth depth,
-                       int frames, boolean concurrent) {
-        transformations.add(new Rotate(x, y, theta, interpolationKind, direction, depth, frames, concurrent));
-    }
-
     public abstract void animate();
     public abstract void setStill();
 
@@ -81,16 +63,6 @@ public abstract class MathObject {
     public void setOrigPos(double x, double y) {
         originX = x;
         originY = y;
-    }
-
-    // Consequence of weird design. Maybe I'll be able to do away with this eventually
-    public void setAll(double x, double y) {
-        this.x = x;
-        this.y = y;
-        originX = x;
-        originY = y;
-        targX = x;
-        targY = y;
     }
 }
 

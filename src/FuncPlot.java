@@ -18,19 +18,22 @@ public abstract class FuncPlot extends MathObjCol {
 
         Line lineSeg = new Line(p1, p2);
         lineSeg.setCullPoints(p1, p2);
+
+        lineSeg.x += p1.x;
+        lineSeg.y += p1.y;
+        lineSeg.setStill();
         return lineSeg;
 
     }
 
     // Returns linear interpolation of range over t as a collection of Lines
     public MathObjCol interpolation(double start, double end, double dt) {
-        ArrayList<Line> lines = new ArrayList();
+        ArrayList<Line> lines = new ArrayList<>();
         for (double t = start; t < end; t += dt) {
             lines.add(interpolate(t, dt));
         }
 
         return new MathObjCol(lines.toArray(new Line[0]));
-        // constituents = new ArrayList<MathObject>(lines);
     }
 
     public void draw() {
