@@ -17,7 +17,8 @@ public class MathObjCol extends MathObject {
         constituents.add(c);
     }
 
-    public void transform(Transformation t, int depth) {
+    public void transform(Transformation t, int depth, int ignoreUpper) {
+
         if (depth < 0) {
             throw new ArithmeticException("Negative depth!");
         }
@@ -26,12 +27,13 @@ public class MathObjCol extends MathObject {
         }
         else {
             //transformations.add(t);
-            if (constituents.size() == 0) {
+            if (constituents.size() < depth) {
                 throw new ArithmeticException("animation too deep!");
             }
 
             for (MathObjCol c : constituents) {
-                c.transform(t.copy(), depth-1);            }
+                c.transform(t.copy(), depth-1, ignoreUpper-1);
+            }
         }
     }
 

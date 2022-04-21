@@ -24,7 +24,7 @@ public class MindEye extends PApplet {
 
     @Override
     public void setup() {
-        frameRate(6000);
+        frameRate(60);
         surface.setSize((int)dims[0], (int)dims[1]);
         colorMode(HSB, 360);
         clear();
@@ -35,10 +35,8 @@ public class MindEye extends PApplet {
                 new Point(50, -50),
                 new Point(-50, -50));
 
-
-        square.transform(new Translate(40, 40, AnimationInterpolation.LINEAR, AnimationInterpolationDirection.IN, 1200, false),
-                0);
-
+        square.transform(new Rotate(0, 0, Math.toRadians(360), AnimationInterpolation.LINEAR, AnimationInterpolationDirection.IN, 1200, false),
+                2, 0);
 
         // End
         /*square.transform(new Translate(9999, 9999, AnimationInterpolation.LINEAR, AnimationInterpolationDirection.IN, 0, false),
