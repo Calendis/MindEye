@@ -35,7 +35,6 @@ public abstract class SimpleFuncPlot extends FuncPlot {
 
         // concurrents now contains all our relevant transformations, which will now perform
         for (Transformation ctr : concurrents) {
-            System.out.println("    doing: " + ctr.transformationKind);
 
             switch (ctr.depth) {
                 case NESTED -> {
@@ -67,6 +66,8 @@ public abstract class SimpleFuncPlot extends FuncPlot {
 
         // Depopulate concurrents when transformations have the done flag set
         while(!concurrents.isEmpty() && concurrents.get(0).done) {
+            //originX = x;
+            //originY = y;
             concurrents.remove(0);
         }
 

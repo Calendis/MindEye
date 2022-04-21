@@ -56,12 +56,11 @@ public abstract class Transformation {
 
                 // Rotate
                 double tempX = newX * Math.cos(interpTheta) + newY * Math.sin(interpTheta);
-                double tempY = newX * Math.sin(interpTheta) - newY * Math.cos(interpTheta);
+                double tempY = -newX * Math.sin(interpTheta) + newY * Math.cos(interpTheta);
 
                 // Translate back
                 newX = tempX + x;
                 newY = tempY + y;
-
             }
 
             case TRANSLATE -> {

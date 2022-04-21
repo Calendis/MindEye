@@ -79,13 +79,11 @@ public abstract class FuncPlot extends MathObjCol {
 
     public void translate(double x, double y, AnimationInterpolation interpolationKind, AnimationInterpolationDirection direction, AnimationDepth depth,
                           int frames, boolean concurrent) {
-        System.out.println("translating in FP");
         transformations.add(new Translate(x, y, interpolationKind, direction, depth, frames, concurrent));
     }
 
     public void rotate(double x, double y, double theta, AnimationInterpolation interpolationKind, AnimationInterpolationDirection direction, AnimationDepth depth,
                        int frames, boolean concurrent) {
-        System.out.println("rotating in FP");
         transformations.add(new Rotate(x, y, theta, interpolationKind, direction, depth, frames, concurrent));
     }
 
