@@ -113,12 +113,12 @@ public abstract class FuncPlot extends MathObjCol {
         for (Transformation ctr : concurrents) {
 
             switch (ctr.depth) {
-
                 // Transform the coordinates of each constituent object
                 case NESTED -> {
                     System.out.println("applying to " + constituents.size() + " constituents!");
                     for (MathObject c : constituents) {
                         System.out.println("    This constituent is at (" + c.x + ", " + c.y+")");
+                        System.out.println("        Origin: (" + c.originX + ", " + c.originY + ")");
                         System.out.println("    targ: " + c.targX + ", " + c.targY);
                         double[] transTarg = ctr.apply(c);
                         c.targX = transTarg[0];
@@ -160,6 +160,8 @@ public abstract class FuncPlot extends MathObjCol {
     public void setStill() {
         targX = x;
         targY = y;
+        originX = x;
+        originY = y;
         for (MathObject c : constituents) {
             c.setStill();
         }
