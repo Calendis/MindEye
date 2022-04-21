@@ -25,13 +25,11 @@ public class MindEye extends PApplet {
         colorMode(HSB, 360);
         clear();
 
-        l = new Line(new Point(0, 90), new Point(50, 90));
+        l = new Line(new Point(0, 90), new Point(50, 50));
         l.setStill();
-        //l.rotate(0, 0, Math.toRadians(90), AnimationInterpolation.LINEAR, AnimationInterpolationDirection.IN, 300, false);
-        l.translate(30, -100, AnimationInterpolation.LINEAR, AnimationInterpolationDirection.IN, 300, false);
-        //l.translate(100, 0, AnimationInterpolation.LINEAR, AnimationInterpolationDirection.IN, 94, false);
-        //l.translate(-15, -15, AnimationInterpolation.LINEAR, AnimationInterpolationDirection.IN, 84, false);
-        //l.translate(0, 2, AnimationInterpolation.LINEAR, AnimationInterpolationDirection.IN, 54, false);
+        l.translate(30, -100, AnimationInterpolation.LINEAR, AnimationInterpolationDirection.IN, AnimationDepth.OUTER, 100, false);
+        l.rotate(0, 0, Math.toRadians(360), AnimationInterpolation.LINEAR, AnimationInterpolationDirection.IN, AnimationDepth.OUTER, 300, false);
+        //l.scale(2, -11.1, AnimationInterpolation.LINEAR, AnimationInterpolationDirection.IN, 40, false);
     }
 
     @Override

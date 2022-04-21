@@ -4,13 +4,12 @@ public abstract class Transformation {
     double y;
     double theta;
 
-    double startX = Double.NaN;
-    double startY = Double.NaN;
-
     AnimationInterpolation interpolKind;
     AnimationInterpolationDirection direction;
+    AnimationDepth depth;
+
     int frames;
-    int currentFrame = 0;
+    double currentFrame = 0;
 
     // Consecutive groups of transformations will be done simultaneously if concurrent is true
     boolean concurrent;
@@ -18,58 +17,51 @@ public abstract class Transformation {
     // Useful because we may pass over a "done" transformation if it was done concurrently with a previous transformation
     boolean done = false;
 
-    public Transformation(AnimationInterpolation ai, AnimationInterpolationDirection aid, int f, boolean c) {
+    public Transformation(AnimationInterpolation ai, AnimationInterpolationDirection aid, AnimationDepth d,
+                          int f, boolean c) {
         interpolKind = ai;
         direction = aid;
+        depth = d;
         frames = f;
         concurrent = c;
     }
 
     public double[] apply(MathObject sfp) {
 
-        double newX = startX;
-        double newY = startY;
-        if (Double.isNaN(startX)) {
-            newX = sfp.x;
-            startX = sfp.x;
-        }
-
-        if (Double.isNaN(startY)) {
-            newY = sfp.y;
-            startY = sfp.y;
-        }
+        double newX = sfp.originX;
+        double newY = sfp.originY;
 
         // Interpolate arguments
-        double progress = (double)currentFrame / frames;
-        System.out.println("progress: " + progress);
+        double progress = currentFrame / frames;
         if (progress >= 1) {
             done = true;
-            return new double[] {newX, newY};
+            sfp.setOrigPos(sfp.targX, sfp.targY);
+            return new double[] {sfp.targX, sfp.targY};
         }
 
         double interpX = x * progress;
         double interpY = y * progress;
-        double interpTheta = theta;// * progress;
+        double interpTheta = theta * progress;
 
         switch (transformationKind) {
             case SCALE -> {
-
                 newX *= interpX;
                 newY *= interpY;
             }
 
             case ROTATE -> {
                 // Translate coords to pivot point
-                newX -= interpX;
-                newY -= interpY;
+                newX -= x;
+                newY -= y;
 
                 // Rotate
                 double tempX = newX * Math.cos(interpTheta) + newY * Math.sin(interpTheta);
                 double tempY = newX * Math.sin(interpTheta) - newY * Math.cos(interpTheta);
 
                 // Translate back
-                newX = tempX + interpX;
-                newY = tempY + interpY;
+                newX = tempX + x;
+                newY = tempY + y;
+
             }
 
             case TRANSLATE -> {
@@ -77,12 +69,12 @@ public abstract class Transformation {
                 newY += interpY;
             }
         }
-
-        currentFrame ++;
         return new double[] {newX, newY};
     }
 
-
+    public void advance(double res) {
+        currentFrame += res;
+    }
 }
 
 enum Transform {
@@ -105,9 +97,16 @@ enum AnimationInterpolationDirection {
     OUT
 }
 
+enum AnimationDepth {
+    NESTED,
+    OUTER,
+    ALL
+}
+
 class Scale extends Transformation {
-    public Scale(double scaleX, double scaleY, AnimationInterpolation ai, AnimationInterpolationDirection aid, int frames, boolean c) {
-        super(ai, aid, frames, c);
+    public Scale(double scaleX, double scaleY, AnimationInterpolation ai, AnimationInterpolationDirection aid, AnimationDepth d,
+                 int frames, boolean c) {
+        super(ai, aid, d, frames, c);
         x = scaleX;
         y = scaleY;
         transformationKind = Transform.SCALE;
@@ -115,8 +114,9 @@ class Scale extends Transformation {
 }
 
 class Translate extends Transformation {
-    public Translate(double transX, double transY, AnimationInterpolation ai, AnimationInterpolationDirection aid, int frames, boolean c) {
-        super(ai, aid, frames, c);
+    public Translate(double transX, double transY, AnimationInterpolation ai, AnimationInterpolationDirection aid, AnimationDepth d,
+                     int frames, boolean c) {
+        super(ai, aid, d, frames, c);
         x = transX;
         y = transY;
         transformationKind = Transform.TRANSLATE;
@@ -125,8 +125,9 @@ class Translate extends Transformation {
 
 class Rotate extends Transformation {
 
-    public Rotate(double rotX, double rotY, double theta, AnimationInterpolation ai, AnimationInterpolationDirection aid, int frames, boolean c) {
-        super(ai, aid, frames, c);
+    public Rotate(double rotX, double rotY, double theta, AnimationInterpolation ai, AnimationInterpolationDirection aid, AnimationDepth d,
+                  int frames, boolean c) {
+        super(ai, aid, d, frames, c);
         x = rotX;
         y = rotY;
         this.theta = theta;

@@ -11,44 +11,71 @@ import java.util.stream.Collectors;
 */
 public abstract class SimpleFuncPlot extends FuncPlot {
 
-    /*public void scale(double x, double y, AnimationInterpolation interpolationKind, AnimationInterpolationDirection direction,
-                      int frames, boolean concurrent) {
-        for (MathObject c : constituents) {
-            c.scale(x, y, interpolationKind, direction, frames, concurrent);
-        }
-    }
-
-    // Translate all consituent objects
-    public void translate(double x, double y, AnimationInterpolation interpolationKind,
-                          AnimationInterpolationDirection direction, int frames, boolean concurrent) {
-        for (MathObject c : constituents) {
-            c.translate(x, y, interpolationKind, direction, frames, concurrent);
-        }
-    }
-
-    // Rotate all constituent objects
-
-    public void rotate(double x, double y, double theta, AnimationInterpolation interpolationKind,
-                       AnimationInterpolationDirection direction, int frames, boolean concurrent) {
-
-        System.out.println("rotating in SFP...");
-        for (MathObject c : constituents) {
-            System.out.println("rotating constituent " + c.getClass());
-            c.rotate(x, y, theta, interpolationKind, direction, frames, concurrent);
-        }
-    }*/
-
     // Animates each constituent m
     public void animate() {
-        System.out.println("Animating in SFP");
 
-        for (int i = 0; i < transformations.size(); i++) {
+        // Populate concurrents if none exist
+        if (concurrents.size() == 0)
+        {
+            // Nothing to do
+            if (transformations.size() == 0)
+            {
+                return;
+            }
+
+            concurrents.add(transformations.poll());
+
+            // If the transformation is marked as concurrent, add all concurrent animations
+            if (concurrents.get(0).concurrent) {
+                while(!transformations.isEmpty() && transformations.peek().concurrent) {
+                    concurrents.add(transformations.poll());
+                }
+            }
+        }
+
+        // concurrents now contains all our relevant transformations, which will now perform
+        for (Transformation ctr : concurrents) {
+            System.out.println("    doing: " + ctr.transformationKind);
+
+            switch (ctr.depth) {
+                case NESTED -> {
+                    System.out.println("applying to " + constituents.size() + " constituents!");
+                    for (MathObject c : constituents) {
+                        System.out.println("    This constituent is at (" + c.x + ", " + c.y+")");
+                        System.out.println("    targ: " + c.targX + ", " + c.targY);
+                        double[] transTarg = ctr.apply(c);
+                        c.targX = transTarg[0];
+                        c.targY = transTarg[1];
+                    }
+                }
+
+                case OUTER -> {
+                    double[] transTarg = ctr.apply(this);
+                    targX = transTarg[0];
+                    targY = transTarg[1];
+
+                    x = targX;
+                    y = targY;
+                }
+
+                case ALL -> {
+                    //
+                }
+            }
+            ctr.advance(1);
+        }
+
+        // Depopulate concurrents when transformations have the done flag set
+        while(!concurrents.isEmpty() && concurrents.get(0).done) {
+            concurrents.remove(0);
+        }
+
+        /*for (int i = 0; i < transformations.size(); i++) {
             Transformation tr = transformations.get(i);
 
             // Skip completed transformations. A transformation can be already done if it was part of a group of
             // concurrent transformations
             if (tr.done) {
-                System.out.println("Skipping completed transformation.");
                 continue;
             }
 
@@ -84,7 +111,7 @@ public abstract class SimpleFuncPlot extends FuncPlot {
                         }
 
                         // fixme: this
-                        //laterTransform.done = true;
+                        laterTransform.done = true;
                         concurrents.add(laterTransform);
                         j++;
                     }
@@ -106,25 +133,48 @@ public abstract class SimpleFuncPlot extends FuncPlot {
                     }
                 }
             }
+            else {
+                break;
+            }
 
             // concurrents now contains all our relevant transformations, which will now perform
             for (Transformation ctr : concurrents) {
-                System.out.println("applying!");
-                double[] transTarg =  ctr.apply(this);
-                targX = transTarg[0];
-                targY = transTarg[1];
-            }
-        }
+                System.out.println("    doing: " + ctr.transformationKind);
 
-        // Filter out completed transformations
-        /*ArrayList<Transformation> filteredTransformations = new ArrayList<>(
-                transformations.stream().filter(p -> p.done == false).collect(Collectors.toList()));
-        transformations = filteredTransformations;*/
+                switch (ctr.depth) {
+                    case NESTED -> {
+                        System.out.println("applying to " + constituents.size() + " constituents!");
+                        for (MathObject c : constituents) {
+                            System.out.println("    This constituent is at (" + c.x + ", " + c.y+")");
+                            System.out.println("    targ: " + c.targX + ", " + c.targY);
+                            double[] transTarg = ctr.apply(c);
+                            c.targX = transTarg[0];
+                            c.targY = transTarg[1];
+                        }
+                    }
+
+                    case OUTER -> {
+                        double[] transTarg = ctr.apply(this);
+                        targX = transTarg[0];
+                        targY = transTarg[1];
+
+                        x = targX;
+                        y = targY;
+                    }
+
+                    case ALL -> {
+                        //
+                    }
+                }
+                ctr.advance(1);
+            }
+        }*/
 
         // Once animation is done, set the coordinates
-        //draw();
-        x = targX;
-        y = targY;
+        for (MathObject c : constituents) {
+            c.x = c.targX;
+            c.y = c.targY;
+        }
     }
 
     public void setStill() {
