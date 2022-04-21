@@ -1,4 +1,4 @@
-public class Line extends SimpleFuncPlot {
+public class Line extends FuncPlot {
 
     double m;
     double b;

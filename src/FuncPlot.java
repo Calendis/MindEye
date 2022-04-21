@@ -89,12 +89,80 @@ public abstract class FuncPlot extends MathObjCol {
 
     // Animates the FuncPlot moving to its target position
     public void animate() {
-        System.out.println("ERROR: FuncPlot.animate");
+
+        // Populate concurrents if none exist
+        if (concurrents.size() == 0)
+        {
+            // Nothing to do
+            if (transformations.size() == 0)
+            {
+                return;
+            }
+
+            concurrents.add(transformations.poll());
+
+            // If the transformation is marked as concurrent, add all concurrent animations
+            if (concurrents.get(0).concurrent) {
+                while(!transformations.isEmpty() && transformations.peek().concurrent) {
+                    concurrents.add(transformations.poll());
+                }
+            }
+        }
+
+        // concurrents now contains all our relevant transformations, which will now perform
+        for (Transformation ctr : concurrents) {
+
+            switch (ctr.depth) {
+
+                // Transform the coordinates of each constituent object
+                case NESTED -> {
+                    System.out.println("applying to " + constituents.size() + " constituents!");
+                    for (MathObject c : constituents) {
+                        System.out.println("    This constituent is at (" + c.x + ", " + c.y+")");
+                        System.out.println("    targ: " + c.targX + ", " + c.targY);
+                        double[] transTarg = ctr.apply(c);
+                        c.targX = transTarg[0];
+                        c.targY = transTarg[1];
+                    }
+                }
+
+                // Transform the coordinate of the object itself
+                case OUTER -> {
+                    double[] transTarg = ctr.apply(this);
+                    targX = transTarg[0];
+                    targY = transTarg[1];
+
+                    x = targX;
+                    y = targY;
+                }
+
+                case ALL -> {
+                    //
+                }
+            }
+            ctr.advance(1);
+        }
+
+        // Depopulate concurrents when transformations have the done flag set
+        while(!concurrents.isEmpty() && concurrents.get(0).done) {
+            //originX = x;
+            //originY = y;
+            concurrents.remove(0);
+        }
+
+        // Once animation is done, set the coordinates
+        for (MathObject c : constituents) {
+            c.x = c.targX;
+            c.y = c.targY;
+        }
     }
 
     public void setStill() {
         targX = x;
         targY = y;
+        for (MathObject c : constituents) {
+            c.setStill();
+        }
 
     }
 
