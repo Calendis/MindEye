@@ -14,7 +14,7 @@ public class Sinusoid extends FuncPlot {
     }
 
     public Point evaluate(double t) {
-        return new Point(t + x, amp * Math.sin(freqScale * t + phaseOffset) + y);
+        return new Point(t, amp * Math.sin(freqScale * t + phaseOffset));
     }
 
 }

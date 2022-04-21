@@ -11,7 +11,12 @@ public abstract class FuncPlot extends MathObjCol {
     // Returns linear interpolation of two points on the FuncPlot
     public Line interpolate(double t, double dt) {
         Point p1 = evaluate(t);
+        //p1.x += x;
+        //p1.y += y;
+
         Point p2 = evaluate(t + dt);
+        //p2.x += x;
+        //p2.y += y;
 
         p1.setStill();
         p2.setStill();
@@ -19,8 +24,8 @@ public abstract class FuncPlot extends MathObjCol {
         Line lineSeg = new Line(p1, p2);
         lineSeg.setCullPoints(p1, p2);
 
-        lineSeg.x += p1.x;
-        lineSeg.y += p1.y;
+        //lineSeg.x += p1.x;
+        //lineSeg.y += p1.y;
         lineSeg.setStill();
         return lineSeg;
 

@@ -36,15 +36,24 @@ public class MindEye extends PApplet {
         si = s.interpolation(-50, 50, 0.05);
         si.setStill();
 
-        //si.translate(100, 100, AnimationInterpolation.LINEAR, AnimationInterpolationDirection.IN, AnimationDepth.NESTED, 1200, true);
-        //si.rotate(0, 0, Math.toRadians(360), AnimationInterpolation.LINEAR, AnimationInterpolationDirection.IN, AnimationDepth.OUTER, 1200, true);
-        //si.translate(9999, 9999, AnimationInterpolation.LINEAR, AnimationInterpolationDirection.IN, AnimationDepth.OUTER, 0, false);
+        si.transform(
+                new Translate(50, 100, AnimationInterpolation.LINEAR, AnimationInterpolationDirection.IN, AnimationDepth.OUTER, 1200, false),
+                0
 
-        //l.translate(100, 100, AnimationInterpolation.LINEAR, AnimationInterpolationDirection.IN, 0, 1200, true);
-        si.translate(50, 400, AnimationInterpolation.LINEAR, AnimationInterpolationDirection.IN, 0, 2400, false);
-        si.rotate(100, 0, Math.toRadians(360), AnimationInterpolation.LINEAR, AnimationInterpolationDirection.IN, 0, 2400, true);
-        si.rotate(0, 100, Math.toRadians(360*3), AnimationInterpolation.LINEAR, AnimationInterpolationDirection.IN, 2, 2400, true);
-        si.translate(9999, 9999, AnimationInterpolation.LINEAR, AnimationInterpolationDirection.IN, 0, 0, false);
+        );
+
+
+        si.transform(
+                new Rotate(100, 0, Math.toRadians(360), AnimationInterpolation.LINEAR, AnimationInterpolationDirection.IN, AnimationDepth.OUTER, 1200, false),
+                2
+        );
+
+        si.transform(
+                new Rotate(0, 100, Math.toRadians(360*4), AnimationInterpolation.LINEAR, AnimationInterpolationDirection.IN, AnimationDepth.OUTER, 1200, false),
+                0
+        );
+
+
     }
 
     @Override
@@ -56,7 +65,7 @@ public class MindEye extends PApplet {
         stroke(color((int)((double)frameCount/2400 * 360) , 360, 360));
 
         si.animate();
-        si.draw(si.x, si.y-200);
+        si.draw(si.x, si.y);
 
         //l.animate();
         //l.draw(l.x, l.y);

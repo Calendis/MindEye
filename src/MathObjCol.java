@@ -17,45 +17,21 @@ public class MathObjCol extends MathObject {
         constituents.add(c);
     }
 
-    /*
-        Transformations
-        TODO: use a single method for all of these, and take a Transformation directly
-     */
-    public void scale(double x, double y, AnimationInterpolation interpolationKind, AnimationInterpolationDirection direction, AnimationDepth depth,
-                      int frames, boolean concurrent) {
-        transformations.add(new Scale(x, y, interpolationKind, direction, depth, frames, concurrent));
-    }
-
-    public void translate(double x, double y, AnimationInterpolation interpolationKind, AnimationInterpolationDirection direction, int depth,
-                          int frames, boolean concurrent) {
-
+    public void transform(Transformation t, int depth) {
         if (depth < 0) {
-            throw new ArithmeticException("negative depth!");
+            throw new ArithmeticException("Negative depth!");
         }
         else if (depth == 0) {
-            transformations.add(new Translate(x, y, interpolationKind, direction, AnimationDepth.OUTER, frames, concurrent));
+            transformations.add(t);
         }
         else {
-            for (MathObjCol c : constituents) {
-                c.translate(x, y, interpolationKind, direction, depth-1, frames, concurrent);
-            }
-        }
-    }
-
-    public void rotate(double x, double y, double theta, AnimationInterpolation interpolationKind, AnimationInterpolationDirection direction, int depth,
-                       int frames, boolean concurrent) {
-        if (depth < 0) {
-            throw new ArithmeticException("rotate negative depth!");
-        }
-        else if (depth == 0) {
-            transformations.add(new Rotate(x, y, theta, interpolationKind, direction, AnimationDepth.OUTER, frames, concurrent));
-        }
-        else {
+            //transformations.add(t);
             if (constituents.size() == 0) {
                 throw new ArithmeticException("animation too deep!");
             }
-            for (MathObjCol c : constituents)
-                c.rotate(x, y, theta, interpolationKind, direction, depth-1, frames, concurrent);
+
+            for (MathObjCol c : constituents) {
+                c.transform(t.copy(), depth-1);            }
         }
     }
 
@@ -73,8 +49,10 @@ public class MathObjCol extends MathObject {
 
     public void animate() {
 
-        for (MathObjCol c : constituents) {
-            c.animate();
+        if (constituents.size() > 0) {
+            for (MathObjCol c : constituents) {
+                c.animate();
+            }
         }
 
         // Populate concurrents if none exist
@@ -104,12 +82,15 @@ public class MathObjCol extends MathObject {
 
                 // Transform the coordinates of each constituent object
                 case NESTED -> {
+                    throw new ArithmeticException("DEPRECATED");
+                    /*
                     for (MathObject c : constituents) {
 
                         double[] transTarg = ctr.apply(c);
                         c.targX = transTarg[0];
                         c.targY = transTarg[1];
                     }
+                     */
                 }
 
                 // Transform the coordinate of the object itself

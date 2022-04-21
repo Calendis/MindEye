@@ -26,6 +26,8 @@ public abstract class Transformation {
         concurrent = c;
     }
 
+    public abstract Transformation copy();
+
     public double[] apply(MathObject sfp) {
 
         double newX = sfp.originX;
@@ -110,6 +112,10 @@ class Scale extends Transformation {
         y = scaleY;
         transformationKind = Transform.SCALE;
     }
+
+    public Scale copy() {
+        return new Scale(x, y, interpolKind, direction, depth, frames, concurrent);
+    }
 }
 
 class Translate extends Transformation {
@@ -119,6 +125,10 @@ class Translate extends Transformation {
         x = transX;
         y = transY;
         transformationKind = Transform.TRANSLATE;
+    }
+
+    public Translate copy() {
+        return new Translate(x, y, interpolKind, direction, depth, frames, concurrent);
     }
 }
 
@@ -131,5 +141,9 @@ class Rotate extends Transformation {
         y = rotY;
         this.theta = theta;
         transformationKind = Transform.ROTATE;
+    }
+
+    public Rotate copy() {
+        return new Rotate(x, y, theta, interpolKind, direction, depth, frames, concurrent);
     }
 }
