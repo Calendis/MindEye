@@ -77,36 +77,12 @@ public class MathObjCol extends MathObject {
         // concurrents now contains all our relevant transformations, which will now perform
         for (Transformation ctr : concurrents) {
 
-            // TODO: REMOVE, as depth is now handled earlier via recursion
-            switch (ctr.depth) {
+            double[] transTarg = ctr.apply(this);
+            targX = transTarg[0];
+            targY = transTarg[1];
 
-                // Transform the coordinates of each constituent object
-                case NESTED -> {
-                    throw new ArithmeticException("DEPRECATED");
-                    /*
-                    for (MathObject c : constituents) {
-
-                        double[] transTarg = ctr.apply(c);
-                        c.targX = transTarg[0];
-                        c.targY = transTarg[1];
-                    }
-                     */
-                }
-
-                // Transform the coordinate of the object itself
-                case OUTER -> {
-                    double[] transTarg = ctr.apply(this);
-                    targX = transTarg[0];
-                    targY = transTarg[1];
-
-                    x = targX;
-                    y = targY;
-                }
-
-                case ALL -> {
-                    // TODO: Implement "ALL" animation as both OUTER and NESTED combined
-                }
-            }
+            x = targX;
+            y = targY;
             ctr.advance(1);
         }
 

@@ -6,7 +6,6 @@ public abstract class Transformation {
 
     AnimationInterpolation interpolKind;
     AnimationInterpolationDirection direction;
-    AnimationDepth depth;
 
     int frames;
     double currentFrame = 0;
@@ -17,11 +16,10 @@ public abstract class Transformation {
     // Useful because we may pass over a "done" transformation if it was done concurrently with a previous transformation
     boolean done = false;
 
-    public Transformation(AnimationInterpolation ai, AnimationInterpolationDirection aid, AnimationDepth d,
+    public Transformation(AnimationInterpolation ai, AnimationInterpolationDirection aid,
                           int f, boolean c) {
         interpolKind = ai;
         direction = aid;
-        depth = d;
         frames = f;
         concurrent = c;
     }
@@ -98,45 +96,39 @@ enum AnimationInterpolationDirection {
     OUT
 }
 
-enum AnimationDepth {
-    NESTED,
-    OUTER,
-    ALL
-}
-
 class Scale extends Transformation {
-    public Scale(double scaleX, double scaleY, AnimationInterpolation ai, AnimationInterpolationDirection aid, AnimationDepth d,
+    public Scale(double scaleX, double scaleY, AnimationInterpolation ai, AnimationInterpolationDirection aid,
                  int frames, boolean c) {
-        super(ai, aid, d, frames, c);
+        super(ai, aid, frames, c);
         x = scaleX;
         y = scaleY;
         transformationKind = Transform.SCALE;
     }
 
     public Scale copy() {
-        return new Scale(x, y, interpolKind, direction, depth, frames, concurrent);
+        return new Scale(x, y, interpolKind, direction, frames, concurrent);
     }
 }
 
 class Translate extends Transformation {
-    public Translate(double transX, double transY, AnimationInterpolation ai, AnimationInterpolationDirection aid, AnimationDepth d,
+    public Translate(double transX, double transY, AnimationInterpolation ai, AnimationInterpolationDirection aid,
                      int frames, boolean c) {
-        super(ai, aid, d, frames, c);
+        super(ai, aid, frames, c);
         x = transX;
         y = transY;
         transformationKind = Transform.TRANSLATE;
     }
 
     public Translate copy() {
-        return new Translate(x, y, interpolKind, direction, depth, frames, concurrent);
+        return new Translate(x, y, interpolKind, direction, frames, concurrent);
     }
 }
 
 class Rotate extends Transformation {
 
-    public Rotate(double rotX, double rotY, double theta, AnimationInterpolation ai, AnimationInterpolationDirection aid, AnimationDepth d,
+    public Rotate(double rotX, double rotY, double theta, AnimationInterpolation ai, AnimationInterpolationDirection aid,
                   int frames, boolean c) {
-        super(ai, aid, d, frames, c);
+        super(ai, aid, frames, c);
         x = rotX;
         y = rotY;
         this.theta = theta;
@@ -144,6 +136,6 @@ class Rotate extends Transformation {
     }
 
     public Rotate copy() {
-        return new Rotate(x, y, theta, interpolKind, direction, depth, frames, concurrent);
+        return new Rotate(x, y, theta, interpolKind, direction, frames, concurrent);
     }
 }

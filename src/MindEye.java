@@ -37,20 +37,24 @@ public class MindEye extends PApplet {
         si.setStill();
 
         si.transform(
-                new Translate(50, 100, AnimationInterpolation.LINEAR, AnimationInterpolationDirection.IN, AnimationDepth.OUTER, 1200, false),
+                new Translate(50, 100, AnimationInterpolation.LINEAR, AnimationInterpolationDirection.IN, 1800, false),
                 0
 
         );
 
 
         si.transform(
-                new Rotate(100, 0, Math.toRadians(360), AnimationInterpolation.LINEAR, AnimationInterpolationDirection.IN, AnimationDepth.OUTER, 1200, false),
+                new Rotate(100, 0, Math.toRadians(360), AnimationInterpolation.LINEAR, AnimationInterpolationDirection.IN, 1800, false),
                 2
         );
 
         si.transform(
-                new Rotate(0, 100, Math.toRadians(360*4), AnimationInterpolation.LINEAR, AnimationInterpolationDirection.IN, AnimationDepth.OUTER, 1200, false),
+                new Rotate(0, 100, Math.toRadians(360*4), AnimationInterpolation.LINEAR, AnimationInterpolationDirection.IN, 1200, true),
                 0
+        );
+        si.transform(
+                new Rotate(0, 100, Math.toRadians(-360), AnimationInterpolation.LINEAR, AnimationInterpolationDirection.IN, 1200, true),
+                2
         );
 
 
@@ -62,10 +66,10 @@ public class MindEye extends PApplet {
 
         strokeWeight(0);
         noFill();
-        stroke(color((int)((double)frameCount/2400 * 360) , 360, 360));
+        stroke(color((int)((double)frameCount/3000 * 360) , 360, 360));
 
         si.animate();
-        si.draw(si.x, si.y);
+        si.draw(si.x, si.y - 100);
 
         //l.animate();
         //l.draw(l.x, l.y);
