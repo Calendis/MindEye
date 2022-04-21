@@ -75,6 +75,14 @@ public abstract class MathObject {
         originY = y;
     }
 
-
+    // Consequence of weird design. Maybe I'll be able to do away with this eventually
+    public void setAll(double x, double y) {
+        this.x = x;
+        this.y = y;
+        originX = x;
+        originY = y;
+        targX = x;
+        targY = y;
+    }
 }
 
