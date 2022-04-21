@@ -36,15 +36,23 @@ public abstract class MathObject {
     }
 
 
-    // TODO
-    public abstract void scale(double x, double y, AnimationInterpolation interpolationKind, AnimationInterpolationDirection direction,
-                      int frames, boolean concurrent);
+    /*
+        Transformations
+     */
+    public void scale(double x, double y, AnimationInterpolation interpolationKind, AnimationInterpolationDirection direction, AnimationDepth depth,
+                      int frames, boolean concurrent) {
+        transformations.add(new Scale(x, y, interpolationKind, direction, depth, frames, concurrent));
+    }
 
-    public abstract void translate(double x, double y, AnimationInterpolation interpolationKind,
-                          AnimationInterpolationDirection direction, int frames, boolean concurrent);
+    public void translate(double x, double y, AnimationInterpolation interpolationKind, AnimationInterpolationDirection direction, AnimationDepth depth,
+                          int frames, boolean concurrent) {
+        transformations.add(new Translate(x, y, interpolationKind, direction, depth, frames, concurrent));
+    }
 
-    public abstract void rotate(double x, double y, double theta, AnimationInterpolation interpolationKind,
-                       AnimationInterpolationDirection direction, int frames, boolean concurrent);
+    public void rotate(double x, double y, double theta, AnimationInterpolation interpolationKind, AnimationInterpolationDirection direction, AnimationDepth depth,
+                       int frames, boolean concurrent) {
+        transformations.add(new Rotate(x, y, theta, interpolationKind, direction, depth, frames, concurrent));
+    }
 
     public abstract void animate();
     public abstract void setStill();

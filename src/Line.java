@@ -3,17 +3,10 @@ public class Line extends FuncPlot {
     double m;
     double b;
 
-    // Defines boundaries for drawing the line
-    //Point cullStart;
-    //Point cullEnd;
-
     // Line created from two points
     public Line(Point p1, Point p2) {
         add(p1);
         add(p2);
-        //x = (p1.x + p2.x) / 2;
-        //y = (p1.y + p2.y) / 2;
-        //setCullPoints(p1, p2);
 
         // Find slope-intercept
         m = (y(1) - y(0)) / (x(1) - x(0));
