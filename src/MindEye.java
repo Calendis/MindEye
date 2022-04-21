@@ -8,6 +8,8 @@ public class MindEye extends PApplet {
     Line l;
     Sinusoid s;
     MathObjCol si;
+    Polygon square;
+    Polygon square2;
 
     boolean done = false;
 
@@ -27,36 +29,20 @@ public class MindEye extends PApplet {
         colorMode(HSB, 360);
         clear();
 
-        l = new Line(new Point(0, -100), new Point(-0, 100));
-        l.setStill();
-
-        s = new Sinusoid(0, 0, 50, 0.08, 0);
-        s.setStill();
-
-        si = s.interpolation(-50, 50, 0.05);
-        si.setStill();
-
-        si.transform(
-                new Translate(50, 100, AnimationInterpolation.LINEAR, AnimationInterpolationDirection.IN, 1800, false),
-                0
-
-        );
+        square = new Polygon(
+                new Point(-50, 50),
+                new Point(50, 50),
+                new Point(50, -50),
+                new Point(-50, -50));
 
 
-        si.transform(
-                new Rotate(100, 0, Math.toRadians(360), AnimationInterpolation.LINEAR, AnimationInterpolationDirection.IN, 1800, false),
-                2
-        );
+        square.transform(new Translate(40, 40, AnimationInterpolation.LINEAR, AnimationInterpolationDirection.IN, 1200, false),
+                0);
 
-        si.transform(
-                new Rotate(0, 100, Math.toRadians(360*4), AnimationInterpolation.LINEAR, AnimationInterpolationDirection.IN, 1200, true),
-                0
-        );
-        si.transform(
-                new Rotate(0, 100, Math.toRadians(-360), AnimationInterpolation.LINEAR, AnimationInterpolationDirection.IN, 1200, true),
-                2
-        );
 
+        // End
+        /*square.transform(new Translate(9999, 9999, AnimationInterpolation.LINEAR, AnimationInterpolationDirection.IN, 0, false),
+                0);*/
 
     }
 
@@ -64,17 +50,11 @@ public class MindEye extends PApplet {
     public void draw() {
         //clear();
 
+        square.animate();
+        square.draw(square.x, square.y);
+
         strokeWeight(0);
         noFill();
-        stroke(color((int)((double)frameCount/3000 * 360) , 360, 360));
-
-        si.animate();
-        si.draw(si.x, si.y - 100);
-
-        //l.animate();
-        //l.draw(l.x, l.y);
-
-        //done = true;
-        //frameRate(0);
+        stroke(color((int)((double)frameCount/1200 * 360) , 360, 360));
     }
 }

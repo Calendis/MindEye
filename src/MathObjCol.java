@@ -110,5 +110,4 @@ public class MathObjCol extends MathObject {
 
     }
 
-
 }
